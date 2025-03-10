@@ -31,11 +31,13 @@
 cola::VFilter *CRootWriterFactory::create(const std::map<std::string, std::string> & paramMap) {
     size_t bufferSize = DEFAULT_BUFFER_SIZE;
     bool writeCoord = false;
+    std::string format = "COLANative";
     if (paramMap.find("buff_size") != paramMap.end())
         bufferSize = std::stoi(paramMap.at("buff_size"));
     if (paramMap.find("write_coord") != paramMap.end())
         writeCoord = std::stoi(paramMap.at("write_coord"));
-    std::string format = paramMap.at("format");
+    if (paramMap.find("format") != paramMap.end())
+        std::string format = paramMap.at("format");
     if (format == "UniGen")
         return new CUniGenWriter(paramMap.at("file_name"), bufferSize, "UniGen", writeCoord);
     else
