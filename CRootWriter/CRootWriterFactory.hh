@@ -18,8 +18,8 @@
 * along with CRoot.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef CUNIGEN_CUNIGENFACTORY_HH
-#define CUNIGEN_CUNIGENFACTORY_HH
+#ifndef CROOT_CUNIGENFACTORY_HH
+#define CROOT_CUNIGENFACTORY_HH
 
 #include "COLA.hh"
 
@@ -28,5 +28,5 @@ public:
     cola::VFilter* create(const std::map<std::string, std::string>&) final;
 };
 
-#endif //CUNIGEN_CUNIGENFACTORY_HH
+#endif //CROOT_CUNIGENFACTORY_HH
 

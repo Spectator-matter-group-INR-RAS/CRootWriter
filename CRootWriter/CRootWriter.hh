@@ -21,8 +21,6 @@
 #ifndef CROOT_CROOTWRITER_HH
 #define CROOT_CROOTWRITER_HH
 
-#include <utility>
-
 #include "URun.hh"
 #include "UEvent.hh"
 #include "UParticle.hh"
@@ -38,7 +36,7 @@ private:
     const size_t buffSize;
 
 protected:
-    TTree* outputTree;
+    std::unique_ptr<TTree> outputTree;
     size_t count;
 
     virtual void _write_event(std::unique_ptr<cola::EventData>&&) = 0;

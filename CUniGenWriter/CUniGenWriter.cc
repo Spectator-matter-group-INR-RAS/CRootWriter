@@ -80,4 +80,7 @@ void CUniGenWriter::_write_event(std::unique_ptr<cola::EventData> && data) {
             curEvent->AddParticle(i++, particle.pdgCode, static_cast<int>(particle.pClass), -1, -1, -1, -1, childPlug, -1, -1, -1 ,-1, -1, -1, -1, -1, -1);
 
     outputTree->Fill();
+    
+    // Clear particles
+    curEvent->Clear();
 }

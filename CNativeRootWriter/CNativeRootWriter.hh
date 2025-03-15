@@ -18,6 +18,9 @@
 * along with CRoot.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#ifndef CROOT_CNATIVEROOTWRITER_HH
+#define CROOT_CNATIVEROOTWRITER_HH
+
 #include "CRootWriter.hh"
 #include "COLA.hh"
 
@@ -36,3 +39,5 @@ public:
     CNativeRootWriter& operator=(CNativeRootWriter&&) = delete;
     CNativeRootWriter(const std::string& fName, const size_t buffSize, const char* treeName = "COLANative", bool writeCoord = false);
 };
+
+#endif //CROOT_CNATIVEROOTWRITER_HH
