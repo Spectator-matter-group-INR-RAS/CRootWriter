@@ -21,12 +21,13 @@
 #include "CRootWriter.hh"
 #include "TFile.h"
 
-CRootWriter::CRootWriter(const std::string &fName, const size_t buffSize, const char* treeName) : outputFile(std::unique_ptr<TFile>(TFile::Open(fName.c_str(), "RECREATE"))),
-buffSize(buffSize), outputTree(new TTree(treeName, treeName)), count(0) {}
+CRootWriter::CRootWriter(const std::string &fName, const size_t buffSize) : outputFile(std::unique_ptr<TFile>(TFile::Open(fName.c_str(), "RECREATE"))),
+buffSize(buffSize), count(0) {}
 
 
 CRootWriter::~CRootWriter() {
-    outputTree->Write();
+    for (auto&& tree : outputTreeMap)
+        tree.second->Write();
     outputFile->Save();
     outputFile->Close();
 }
@@ -35,5 +36,6 @@ void CRootWriter::operator()(std::unique_ptr<cola::EventData>&& data) {
     _write_event(std::move(data));
     count++;
     if (count % buffSize == 0)
-        outputTree->Write();
+        for (auto&& tree : outputTreeMap)
+            tree.second->Write();
 }

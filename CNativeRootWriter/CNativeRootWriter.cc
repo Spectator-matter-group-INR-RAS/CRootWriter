@@ -20,8 +20,10 @@
 
 #include "CNativeRootWriter.hh"
 
-CNativeRootWriter::CNativeRootWriter(const std::string &fName, const size_t buffSize, const char* treeName, bool writeCoord) : CRootWriter(fName, buffSize, treeName),
+CNativeRootWriter::CNativeRootWriter(const std::string &fName, const size_t buffSize, bool writeCoord) : CRootWriter(fName, buffSize),
     eventData(std::make_unique<cola::EventData>()) {
+        outputTreeMap.emplace("ColaNative", std::make_unique<TTree>("ColaNative", "ColaNative"));
+        outputTree = outputTreeMap.at("ColaNative").get();
         outputTree->Branch("events", eventData.get());
         //disable unfilled subbrranches
         if (not writeCoord) {

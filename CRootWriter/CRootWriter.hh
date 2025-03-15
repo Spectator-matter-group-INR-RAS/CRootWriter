@@ -36,14 +36,14 @@ private:
     const size_t buffSize;
 
 protected:
-    std::unique_ptr<TTree> outputTree;
+    std::map<std::string, std::unique_ptr<TTree>> outputTreeMap;
     size_t count;
 
     virtual void _write_event(std::unique_ptr<cola::EventData>&&) = 0;
 
 public:
     CRootWriter() = delete;
-    CRootWriter(const std::string& fName, size_t buffSize, const char* treeName);
+    CRootWriter(const std::string& fName, size_t buffSize);
 
     CRootWriter(const CRootWriter&) = delete;
     CRootWriter(CRootWriter&&) = delete;

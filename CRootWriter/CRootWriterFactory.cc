@@ -39,7 +39,7 @@ cola::VFilter *CRootWriterFactory::create(const std::map<std::string, std::strin
     if (paramMap.find("format") != paramMap.end())
         std::string format = paramMap.at("format");
     if (format == "UniGen")
-        return new CUniGenWriter(paramMap.at("file_name"), bufferSize, "UniGen", writeCoord);
+        return new CUniGenWriter(paramMap.at("file_name"), bufferSize, writeCoord);
     else
-        return new CNativeRootWriter(paramMap.at("file_name"), bufferSize, "COLANative", writeCoord);
+        return new CNativeRootWriter(paramMap.at("file_name"), bufferSize, writeCoord);
 }

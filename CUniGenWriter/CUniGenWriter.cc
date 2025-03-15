@@ -20,8 +20,10 @@
 
 #include "CUniGenWriter.hh"
 
-CUniGenWriter::CUniGenWriter(const std::string &fName, const size_t buffSize, const char* treeName, bool writeCoord) : CRootWriter(fName, buffSize, treeName), curEvent(std::make_unique<UEvent>()),
+CUniGenWriter::CUniGenWriter(const std::string &fName, const size_t buffSize, bool writeCoord) : CRootWriter(fName, buffSize), curEvent(std::make_unique<UEvent>()),
  run(std::make_unique<URun>()), _writeCoord(writeCoord), _runFilled(false) {
+    outputTreeMap.emplace("UniGen", std::make_unique<TTree>("UniGen", "UniGen"));
+    outputTree = outputTreeMap.at("UniGen").get();
     outputTree->Branch("events", curEvent.get());
     //disable unfilled subbrranches
     outputTree->SetBranchStatus("events.fPhi", false);

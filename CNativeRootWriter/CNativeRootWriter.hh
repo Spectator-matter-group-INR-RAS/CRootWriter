@@ -29,6 +29,8 @@ private:
     std::unique_ptr<cola::EventData> eventData;
     bool _writeCoord;
 
+    TTree* outputTree;                      // only view to single map element
+
     void _write_event(std::unique_ptr<cola::EventData>&&) final;
 
 public:
@@ -37,7 +39,7 @@ public:
     CNativeRootWriter(CNativeRootWriter&&) = delete;
     CNativeRootWriter& operator=(const CNativeRootWriter&) = delete;
     CNativeRootWriter& operator=(CNativeRootWriter&&) = delete;
-    CNativeRootWriter(const std::string& fName, const size_t buffSize, const char* treeName = "COLANative", bool writeCoord = false);
+    CNativeRootWriter(const std::string& fName, const size_t buffSize, bool writeCoord = false);
 };
 
 #endif //CROOT_CNATIVEROOTWRITER_HH
