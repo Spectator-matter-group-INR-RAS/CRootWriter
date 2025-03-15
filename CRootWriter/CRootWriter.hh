@@ -39,7 +39,7 @@ protected:
     std::map<std::string, std::unique_ptr<TTree>> outputTreeMap;
     size_t count;
 
-    virtual void _write_event(std::unique_ptr<cola::EventData>&&) = 0;
+    virtual void write_event(std::unique_ptr<cola::EventData>&&) = 0;
 
 public:
     CRootWriter() = delete;

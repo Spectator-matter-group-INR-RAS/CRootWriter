@@ -33,7 +33,7 @@ CRootWriter::~CRootWriter() {
 }
 
 void CRootWriter::operator()(std::unique_ptr<cola::EventData>&& data) {
-    _write_event(std::move(data));
+    write_event(std::move(data));
     count++;
     if (count % buffSize == 0)
         for (auto&& tree : outputTreeMap)

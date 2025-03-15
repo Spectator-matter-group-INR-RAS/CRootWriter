@@ -43,7 +43,7 @@ private:
     bool _runFilled;
     TTree* outputTree;                      // only view to single map element
 
-    void _write_event(std::unique_ptr<cola::EventData>&&) final;
+    void write_event(std::unique_ptr<cola::EventData>&&) final;
 
 public:
     CUniGenWriter() = delete;

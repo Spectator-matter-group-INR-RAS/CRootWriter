@@ -48,7 +48,7 @@ CUniGenWriter::CUniGenWriter(const std::string &fName, const size_t buffSize, bo
     }
 }
 
-void CUniGenWriter::_write_event(std::unique_ptr<cola::EventData> && data) {
+void CUniGenWriter::write_event(std::unique_ptr<cola::EventData> && data) {
    
     const auto& iniState = data->iniState;
     const auto& particles = data->particles;

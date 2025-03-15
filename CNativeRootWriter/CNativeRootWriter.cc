@@ -32,7 +32,7 @@ CNativeRootWriter::CNativeRootWriter(const std::string &fName, const size_t buff
         }
     }
 
-void CNativeRootWriter::_write_event(std::unique_ptr<cola::EventData>&& data) {
+void CNativeRootWriter::write_event(std::unique_ptr<cola::EventData>&& data) {
     eventData = std::move(data);
     outputTree->SetBranchAddress("events", eventData.get());
     outputTree->Fill();
