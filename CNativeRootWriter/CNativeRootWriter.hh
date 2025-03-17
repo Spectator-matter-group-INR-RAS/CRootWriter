@@ -26,7 +26,7 @@
 
 class CNativeRootWriter final : public CRootWriter {
 private:
-    std::unique_ptr<cola::EventData> eventData;
+    cola::EventData eventData;
     bool _writeCoord;
 
     TTree* outputTree;                      // only view to single map element

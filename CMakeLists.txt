@@ -44,7 +44,7 @@ CAAMCCWriter/CAAMCCWriter.hh")
 
 # Generate dictionaries for I/O classes
 ROOT_GENERATE_DICTIONARY(
-        Dict_CRootWriter UniGen/include/URun.hh UniGen/include/UEvent.hh UniGen/include/UParticle.hh
+        Dict_CRootWriter ${COLA_DIR}/include/COLA.hh ${COLA_DIR}/include/LorentzVector.hh UniGen/include/URun.hh UniGen/include/UEvent.hh UniGen/include/UParticle.hh
         LINKDEF LinkDef.hh
         MODULE CRootWriter
 )
