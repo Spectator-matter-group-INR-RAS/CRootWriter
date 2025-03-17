@@ -126,14 +126,14 @@ struct AAMCCrun{
     AAMCCrun& operator=(const cola::EventData&);
 };
 
-class CAAMCCWriter : CRootWriter {
+class CAAMCCWriter : public CRootWriter {
 private:
     std::unique_ptr<TTree> tRun;                // tRun is purposefuly not in map, so auto buffering isn't applied
     AAMCCEvent event;
     AAMCCrun runData;
 
     bool callflag = true;
-    bool write_coord;
+    bool writeCoord;
 
     void write_event(std::unique_ptr<cola::EventData>&&) final;
 
@@ -144,7 +144,7 @@ public:
     CAAMCCWriter& operator=(const CAAMCCWriter&) = delete;
     CAAMCCWriter& operator=(CAAMCCWriter&&) = delete;
     
-    CAAMCCWriter(const std::string& fName, const size_t buffSize, const bool write_coord);
+    CAAMCCWriter(const std::string& fName, const size_t buffSize, const bool writeCoord);
 };
 
 

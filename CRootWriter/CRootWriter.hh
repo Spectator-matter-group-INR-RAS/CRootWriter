@@ -36,7 +36,7 @@ private:
     const size_t buffSize;
 
 protected:
-    std::map<std::string, std::unique_ptr<TTree>> outputTreeMap;
+    std::map<std::string, TTree*> outputTreeMap;
     size_t count;
 
     virtual void write_event(std::unique_ptr<cola::EventData>&&) = 0;

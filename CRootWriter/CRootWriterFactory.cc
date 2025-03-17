@@ -27,6 +27,7 @@
 
 #include "CUniGenWriter.hh"
 #include "CNativeRootWriter.hh"
+#include "CAAMCCWriter.hh"
 
 cola::VFilter *CRootWriterFactory::create(const std::map<std::string, std::string> & paramMap) {
     size_t bufferSize = DEFAULT_BUFFER_SIZE;
@@ -37,9 +38,11 @@ cola::VFilter *CRootWriterFactory::create(const std::map<std::string, std::strin
     if (paramMap.find("write_coord") != paramMap.end())
         writeCoord = std::stoi(paramMap.at("write_coord"));
     if (paramMap.find("format") != paramMap.end())
-        std::string format = paramMap.at("format");
+        format = paramMap.at("format");
     if (format == "UniGen")
         return new CUniGenWriter(paramMap.at("file_name"), bufferSize, writeCoord);
+    if (format == "AAMCC")
+        return new CAAMCCWriter(paramMap.at("file_name"), bufferSize, writeCoord);
     else
         return new CNativeRootWriter(paramMap.at("file_name"), bufferSize, writeCoord);
 }

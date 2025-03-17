@@ -20,21 +20,23 @@
 
 #include "CAAMCCWriter.hh"
 
-CAAMCCWriter::CAAMCCWriter(const std::string& fName, const size_t buffSize, const bool write_coord) : CRootWriter(fName, buffSize), write_coord(write_coord) {
+CAAMCCWriter::CAAMCCWriter(const std::string& fName, const size_t buffSize, const bool writeCoord) : CRootWriter(fName, buffSize), writeCoord(writeCoord) {
     //data trees
-    outputTreeMap.emplace("Glauber", std::make_unique<TTree>("Glauber","Events from glauber modeling"));
-    std::unique_ptr<TTree>& tGlauber = outputTreeMap.at("Glauber");
+    outputTreeMap.emplace("Glauber", new TTree("Glauber","Events from glauber modeling"));
+    TTree* tGlauber = outputTreeMap.at("Glauber");
 
     tGlauber->SetDirectory(0);
 
-    tGlauber->Branch("pseudorapidity_on_A", "std::vector", &event.pseudorapidity_A);
-    tGlauber->Branch("pseudorapidity_on_B", "std::vector", &event.pseudorapidity_B);
-    tGlauber->Branch("pX_on_A", "std::vector" ,&event.pXonSideA,128000,1);
-    tGlauber->Branch("pY_on_A", "std::vector" ,&event.pYonSideA,128000,1);
-    tGlauber->Branch("pZ_on_A", "std::vector" ,&event.pZonSideA,128000,1);
-    tGlauber->Branch("pX_on_B", "std::vector" ,&event.pXonSideB,128000,1);
-    tGlauber->Branch("pY_on_B", "std::vector" ,&event.pYonSideB,128000,1);
-    tGlauber->Branch("pZ_on_B", "std::vector" ,&event.pZonSideB,128000,1);
+    if (writeCoord) {
+        tGlauber->Branch("pseudorapidity_on_A", "std::vector", &event.pseudorapidity_A);
+        tGlauber->Branch("pseudorapidity_on_B", "std::vector", &event.pseudorapidity_B);
+        tGlauber->Branch("pX_on_A", "std::vector" ,&event.pXonSideA,128000,1);
+        tGlauber->Branch("pY_on_A", "std::vector" ,&event.pYonSideA,128000,1);
+        tGlauber->Branch("pZ_on_A", "std::vector" ,&event.pZonSideA,128000,1);
+        tGlauber->Branch("pX_on_B", "std::vector" ,&event.pXonSideB,128000,1);
+        tGlauber->Branch("pY_on_B", "std::vector" ,&event.pYonSideB,128000,1);
+        tGlauber->Branch("pZ_on_B", "std::vector" ,&event.pZonSideB,128000,1);
+    }
 
     tGlauber->Branch("id", &event.id, "id/i");
     tGlauber->Branch("A_on_A", "std::vector" ,&event.MassOnSideA);
@@ -123,7 +125,7 @@ void CAAMCCWriter::write_event(std::unique_ptr<cola::EventData>&& data) {
         case cola::ParticleClass::spectatorA:
             event.MassOnSideA.push_back(static_cast<float>(particle.getAZ().first));
             event.ChargeOnSideA.push_back(static_cast<float>(particle.getAZ().second));
-            if (write_coord) {
+            if (writeCoord) {
                 event.pXonSideA.push_back(particle.momentum.x);
                 event.pYonSideA.push_back(particle.momentum.y);
                 event.pZonSideA.push_back(particle.momentum.z);
@@ -136,7 +138,7 @@ void CAAMCCWriter::write_event(std::unique_ptr<cola::EventData>&& data) {
         case cola::ParticleClass::spectatorB:
             event.MassOnSideB.push_back(static_cast<float>(particle.getAZ().first));
             event.ChargeOnSideB.push_back(static_cast<float>(particle.getAZ().second));
-            if (write_coord) {
+            if (writeCoord) {
                 event.pXonSideB.push_back(particle.momentum.x);
                 event.pYonSideB.push_back(particle.momentum.y);
                 event.pZonSideB.push_back(particle.momentum.z);
@@ -149,4 +151,21 @@ void CAAMCCWriter::write_event(std::unique_ptr<cola::EventData>&& data) {
 
     for (const auto& tree: outputTreeMap)
         tree.second->Fill();
+
+    // clear after fillng
+    event.MassOnSideA.clear();
+    event.MassOnSideB.clear();
+    event.ChargeOnSideA.clear();
+    event.ChargeOnSideB.clear();
+    if (writeCoord) {
+        event.pXonSideA.clear();
+        event.pYonSideA.clear();
+        event.pZonSideA.clear();
+        event.pseudorapidity_A.clear();
+        event.pXonSideB.clear();
+        event.pYonSideB.clear();
+        event.pZonSideB.clear();
+        event.pseudorapidity_B.clear();
+    }
+
 } 

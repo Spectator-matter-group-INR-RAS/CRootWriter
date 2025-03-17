@@ -22,8 +22,8 @@
 
 CNativeRootWriter::CNativeRootWriter(const std::string &fName, const size_t buffSize, bool writeCoord) : CRootWriter(fName, buffSize),
     eventData(std::make_unique<cola::EventData>()) {
-        outputTreeMap.emplace("ColaNative", std::make_unique<TTree>("ColaNative", "ColaNative"));
-        outputTree = outputTreeMap.at("ColaNative").get();
+        outputTreeMap.emplace("ColaNative", new TTree("ColaNative", "ColaNative"));
+        outputTree = outputTreeMap.at("ColaNative");
         outputTree->Branch("events", eventData.get());
         //disable unfilled subbrranches
         if (not writeCoord) {
