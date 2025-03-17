@@ -18,7 +18,7 @@
 # along with CRootWriter.  If not, see <https://www.gnu.org/licenses/>.
 
 cmake_minimum_required(VERSION 3.22)
-project(CRootWriter VERSION 1.0)
+project(CRootWriter VERSION 1.1)
 
 set(CMAKE_CXX_STANDARD 17)
 
