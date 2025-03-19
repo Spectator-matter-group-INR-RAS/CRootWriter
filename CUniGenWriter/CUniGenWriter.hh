@@ -18,8 +18,8 @@
 * along with CRoot.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef CUNIGEN_CUNIGENWRITER_HH
-#define CUNIGEN_CUNIGENWRITER_HH
+#ifndef CROOT_CUNIGENWRITER_HH
+#define CROOT_CUNIGENWRITER_HH
 
 #include <utility>
 
@@ -41,8 +41,9 @@ private:
     bool _writeCoord;
 
     bool _runFilled;
+    TTree* outputTree;                      // only view to single map element
 
-    void _write_event(std::unique_ptr<cola::EventData>&&) final;
+    void write_event(std::unique_ptr<cola::EventData>&&) final;
 
 public:
     CUniGenWriter() = delete;
@@ -50,7 +51,7 @@ public:
     CUniGenWriter(CUniGenWriter&&) = delete;
     CUniGenWriter& operator=(const CUniGenWriter&) = delete;
     CUniGenWriter& operator=(CUniGenWriter&&) = delete;
-    CUniGenWriter(const std::string& fName, const size_t buffSize, const char* treeName = "UniGen", bool writeCoord = false);
+    CUniGenWriter(const std::string& fName, const size_t buffSize, bool writeCoord = false);
 
 };
-#endif //CUNIGEN_CUNIGENWRITER_HH
+#endif //CROOT_CUNIGENWRITER_HH

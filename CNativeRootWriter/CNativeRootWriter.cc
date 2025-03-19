@@ -20,18 +20,23 @@
 
 #include "CNativeRootWriter.hh"
 
-CNativeRootWriter::CNativeRootWriter(const std::string &fName, const size_t buffSize, const char* treeName, bool writeCoord) : CRootWriter(fName, buffSize, treeName),
-    eventData(std::make_unique<cola::EventData>()) {
-        outputTree->Branch("events", eventData.get());
+CNativeRootWriter::CNativeRootWriter(const std::string &fName, const size_t buffSize, bool writeCoord) : CRootWriter(fName, buffSize),
+    eventData() {
+        outputTreeMap.emplace("ColaNative", new TTree("ColaNative", "ColaNative"));
+        outputTree = outputTreeMap.at("ColaNative");
+        outputTree->Branch("events", &eventData);
         //disable unfilled subbrranches
         if (not writeCoord) {
-            outputTree->SetBranchStatus("events.EventParticles.position", false);
-            outputTree->SetBranchStatus("events.EventParticles.momentum", false);
+            outputTree->SetBranchStatus("events.particles.position.x", false);
+            outputTree->SetBranchStatus("events.particles.position.y", false);
+            outputTree->SetBranchStatus("events.particles.position.z", false);
+            outputTree->SetBranchStatus("events.particles.momentum.x", false);
+            outputTree->SetBranchStatus("events.particles.momentum.y", false);
+            outputTree->SetBranchStatus("events.particles.momentum.z", false);
         }
     }
 
-void CNativeRootWriter::_write_event(std::unique_ptr<cola::EventData>&& data) {
-    eventData = std::move(data);
-    outputTree->SetBranchAddress("events", eventData.get());
+void CNativeRootWriter::write_event(std::unique_ptr<cola::EventData>&& data) {
+    eventData = std::move(*data);
     outputTree->Fill();
 }

@@ -20,8 +20,10 @@
 
 #include "CUniGenWriter.hh"
 
-CUniGenWriter::CUniGenWriter(const std::string &fName, const size_t buffSize, const char* treeName, bool writeCoord) : CRootWriter(fName, buffSize, treeName), curEvent(std::make_unique<UEvent>()),
+CUniGenWriter::CUniGenWriter(const std::string &fName, const size_t buffSize, bool writeCoord) : CRootWriter(fName, buffSize), curEvent(std::make_unique<UEvent>()),
  run(std::make_unique<URun>()), _writeCoord(writeCoord), _runFilled(false) {
+    outputTreeMap.emplace("UniGen", new TTree("UniGen", "UniGen"));
+    outputTree = outputTreeMap.at("UniGen");
     outputTree->Branch("events", curEvent.get());
     //disable unfilled subbrranches
     outputTree->SetBranchStatus("events.fPhi", false);
@@ -46,7 +48,7 @@ CUniGenWriter::CUniGenWriter(const std::string &fName, const size_t buffSize, co
     }
 }
 
-void CUniGenWriter::_write_event(std::unique_ptr<cola::EventData> && data) {
+void CUniGenWriter::write_event(std::unique_ptr<cola::EventData> && data) {
    
     const auto& iniState = data->iniState;
     const auto& particles = data->particles;
@@ -80,4 +82,7 @@ void CUniGenWriter::_write_event(std::unique_ptr<cola::EventData> && data) {
             curEvent->AddParticle(i++, particle.pdgCode, static_cast<int>(particle.pClass), -1, -1, -1, -1, childPlug, -1, -1, -1 ,-1, -1, -1, -1, -1, -1);
 
     outputTree->Fill();
+    
+    // Clear particles
+    curEvent->Clear();
 }

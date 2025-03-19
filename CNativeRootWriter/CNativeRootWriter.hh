@@ -18,15 +18,20 @@
 * along with CRoot.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#ifndef CROOT_CNATIVEROOTWRITER_HH
+#define CROOT_CNATIVEROOTWRITER_HH
+
 #include "CRootWriter.hh"
 #include "COLA.hh"
 
 class CNativeRootWriter final : public CRootWriter {
 private:
-    std::unique_ptr<cola::EventData> eventData;
+    cola::EventData eventData;
     bool _writeCoord;
 
-    void _write_event(std::unique_ptr<cola::EventData>&&) final;
+    TTree* outputTree;                      // only view to single map element
+
+    void write_event(std::unique_ptr<cola::EventData>&&) final;
 
 public:
     CNativeRootWriter() = delete;
@@ -34,5 +39,7 @@ public:
     CNativeRootWriter(CNativeRootWriter&&) = delete;
     CNativeRootWriter& operator=(const CNativeRootWriter&) = delete;
     CNativeRootWriter& operator=(CNativeRootWriter&&) = delete;
-    CNativeRootWriter(const std::string& fName, const size_t buffSize, const char* treeName = "COLANative", bool writeCoord = false);
+    CNativeRootWriter(const std::string& fName, const size_t buffSize, bool writeCoord = false);
 };
+
+#endif //CROOT_CNATIVEROOTWRITER_HH

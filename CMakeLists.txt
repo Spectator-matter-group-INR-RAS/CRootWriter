@@ -18,7 +18,7 @@
 # along with CRootWriter.  If not, see <https://www.gnu.org/licenses/>.
 
 cmake_minimum_required(VERSION 3.22)
-project(CRootWriter VERSION 1.0)
+project(CRootWriter VERSION 1.1)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -31,19 +31,20 @@ set(CMAKE_INSTALL_PREFIX ${COLA_DIR})
 set(COLA_MODULE_NAME CRootWriter)
 
 set(srcs CRootWriter/CRootWriterFactory.cc CRootWriter/CRootWriter.cc UniGen/src/UEvent.cxx UniGen/src/UParticle.cxx UniGen/src/URun.cxx
-        CUniGenWriter/CUniGenWriter.cc CNativeRootWriter/CNativeRootWriter.cc)
+        CUniGenWriter/CUniGenWriter.cc CNativeRootWriter/CNativeRootWriter.cc CAAMCCWriter/CAAMCCWriter.cc)
 add_library(CRootWriter SHARED ${srcs})
 
 target_include_directories(CRootWriter PUBLIC 
-        "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/CRootWriter;${PROJECT_SOURCE_DIR}/UniGen/include;${PROJECT_SOURCE_DIR}/CUniGenWriter;${PROJECT_SOURCE_DIR}/CNativeRootWriter>"
+        "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/CRootWriter;${PROJECT_SOURCE_DIR}/UniGen/include;${PROJECT_SOURCE_DIR}/CUniGenWriter;${PROJECT_SOURCE_DIR}/CNativeRootWriter;${PROJECT_SOURCE_DIR}/CAAMCCWriter>"
         $<INSTALL_INTERFACE:include/${COLA_MODULE_NAME}>)
 
 set_target_properties(CRootWriter PROPERTIES PUBLIC_HEADER "CRootWriter/CRootWriter.hh;CRootWriter/CRootWriterFactory.hh;\
-UniGen/include/UEvent.hh;UniGen/include/UParticle.hh;UniGen/include/URun.hh;CUniGenWriter/CUniGenWriter.hh;CNativeRootWriter/CNativeRootWriter.hh")
+UniGen/include/UEvent.hh;UniGen/include/UParticle.hh;UniGen/include/URun.hh;CUniGenWriter/CUniGenWriter.hh;CNativeRootWriter/CNativeRootWriter.hh;\
+CAAMCCWriter/CAAMCCWriter.hh")
 
 # Generate dictionaries for I/O classes
 ROOT_GENERATE_DICTIONARY(
-        Dict_CRootWriter UniGen/include/URun.hh UniGen/include/UEvent.hh UniGen/include/UParticle.hh
+        Dict_CRootWriter ${COLA_DIR}/include/COLA.hh ${COLA_DIR}/include/LorentzVector.hh UniGen/include/URun.hh UniGen/include/UEvent.hh UniGen/include/UParticle.hh
         LINKDEF LinkDef.hh
         MODULE CRootWriter
 )
